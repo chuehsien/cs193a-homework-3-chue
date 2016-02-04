@@ -65,7 +65,7 @@ public class MainActivity extends SimpleActivity {
         if (myStory != null) {
 
            if (myStory.getPlaceholderRemainingCount() > 0) {
-               Toast.makeText(this, String.format("words to fill: %d",myStory.getPlaceholderCount()), Toast.LENGTH_LONG).show();
+               Toast.makeText(this, String.format("words to fill: %d",myStory.getPlaceholderCount()), Toast.LENGTH_SHORT).show();
                fillWords(myStory.getNextPlaceholder());
                Button button = (Button) findViewById(R.id.StartButton);
                button.setEnabled(false);
@@ -90,20 +90,26 @@ public class MainActivity extends SimpleActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == FillInWords_TAG) {
             // came back from fill words activity
+            if (resultCode == RESULT_OK) {
+                String data = intent.getStringExtra("result");
 
-            String data = intent.getStringExtra("result");
+                myStory.fillInPlaceholder(data);
 
-            myStory.fillInPlaceholder(data);
+                if (myStory.getPlaceholderRemainingCount() > 0)
+                    fillWords(myStory.getNextPlaceholder());
+                else {
 
-            if (myStory.getPlaceholderRemainingCount() > 0) fillWords(myStory.getNextPlaceholder());
+                    Intent intent_showstory = new Intent(this, ShowStoryActivity.class);
+                    intent_showstory.putExtra("body", myStory.toString());
+                    startActivityForResult(intent_showstory, ShowStory_TAG);
+                }
+            }
             else{
-
-                Intent intent_showstory = new Intent(this, ShowStoryActivity.class);
-                intent_showstory.putExtra("body",myStory.toString());
-                startActivityForResult(intent_showstory, ShowStory_TAG);
+                Button button = (Button) findViewById(R.id.StartButton);
+                button.setEnabled(true);
             }
         }
-        if (requestCode == ShowStory_TAG && resultCode == RESULT_OK){
+        if (requestCode == ShowStory_TAG){
             Button button = (Button) findViewById(R.id.StartButton);
             button.setEnabled(true);
         }

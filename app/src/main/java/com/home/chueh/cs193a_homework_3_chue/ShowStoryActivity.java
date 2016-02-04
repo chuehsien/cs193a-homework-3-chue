@@ -18,9 +18,15 @@ public class ShowStoryActivity extends SimpleActivity {
         setContentView(R.layout.activity_show_story);
 
         Intent intent = getIntent();
-        String body = intent.getStringExtra("body");
-        TextView textBody = (TextView) findViewById(R.id.textBody);
-        textBody.setText(Html.fromHtml(body));
+        try {
+            String body = intent.getStringExtra("body");
+            TextView textBody = (TextView) findViewById(R.id.textBody);
+            textBody.setText(Html.fromHtml(body));
+        }catch(Exception e){
+            Intent intent2 = new Intent();
+            setResult(RESULT_OK, intent2);
+            finish(); // calls onDestroy
+        }
     }
 
     public void backToHome(View view) {

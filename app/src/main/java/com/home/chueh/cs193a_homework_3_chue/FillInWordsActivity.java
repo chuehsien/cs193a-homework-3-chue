@@ -21,8 +21,14 @@ public class FillInWordsActivity extends SimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_in_words);
         Intent intent = getIntent();
-        wordType = intent.getStringExtra(wordType_TAG);
-        startFillingWords();
+        try {
+            wordType = intent.getStringExtra(wordType_TAG);
+            startFillingWords();
+        }catch(Exception e){
+            Intent intent2 = new Intent();
+            setResult(RESULT_OK, intent2);
+            finish(); // calls onDestroy
+        }
     }
 
     private void startFillingWords() {
