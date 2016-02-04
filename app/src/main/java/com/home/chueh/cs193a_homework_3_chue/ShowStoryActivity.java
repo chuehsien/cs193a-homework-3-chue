@@ -11,7 +11,6 @@ import cs193a.stanford.edu.hw3_madlibs.R;
 import stanford.androidlib.SimpleActivity;
 
 public class ShowStoryActivity extends SimpleActivity {
-    // TODO: finish me!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
